@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InventoryProjectDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Inventory">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="QuantityOnHand" Type="int" />
+  </EntityType>
+  <EntityType Name="InventoryAuditLog">
+    <Key>
+      <PropertyRef Name="LogID" />
+      <PropertyRef Name="ChangeDate" />
+    </Key>
+    <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="OldQuantity" Type="int" Nullable="false" />
+    <Property Name="NewQuantity" Type="int" Nullable="false" />
+    <Property Name="ChangeDate" Type="datetime" Nullable="false" />
+    <Property Name="ChangedBy" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SKU" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="255" />
+    <Property Name="BasePrice" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PurchaseOrderItems">
+    <Key>
+      <PropertyRef Name="PO_ItemID" />
+    </Key>
+    <Property Name="PO_ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PO_ID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="UnitCost" Type="decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="PurchaseOrders">
+    <Key>
+      <PropertyRef Name="PO_ID" />
+    </Key>
+    <Property Name="PO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SupplierID" Type="int" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="SalesOrderItems">
+    <Key>
+      <PropertyRef Name="OrderItemID" />
+    </Key>
+    <Property Name="OrderItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="UnitPrice" Type="decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="SalesOrders">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="OrderDate" />
+    </Key>
+    <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Suppliers">
+    <Key>
+      <PropertyRef Name="SupplierID" />
+    </Key>
+    <Property Name="SupplierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SupplierName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ContactInfo" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Warehouses">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Location" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'InventoryProjectDB.dbo.vw_OrderDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vw_OrderDetails">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="OrderDate" />
+      <PropertyRef Name="Status" />
+      <PropertyRef Name="CustomerName" />
+      <PropertyRef Name="Email" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="SKU" />
+    </Key>
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="SKU" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="UnitPrice" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="LineTotal" Type="decimal" Precision="21" Scale="2" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'InventoryProjectDB.dbo.vw_ProductSalesSummary' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vw_ProductSalesSummary">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="SKU" />
+    </Key>
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="SKU" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="TotalQuantitySold" Type="int" />
+    <Property Name="TotalRevenue" Type="decimal" Precision="38" Scale="2" />
+  </EntityType>
+  <Association Name="FK__Inventory__Produ__440B1D61">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inventory__Produ__5DCAEF64">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="InventoryAuditLog" Type="Self.InventoryAuditLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="InventoryAuditLog">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inventory__Wareh__44FF419A">
+    <End Role="Warehouses" Type="Self.Warehouses" Multiplicity="1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Warehouses">
+        <PropertyRef Name="WarehouseID" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="WarehouseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inventory__Wareh__5EBF139D">
+    <End Role="Warehouses" Type="Self.Warehouses" Multiplicity="1" />
+    <End Role="InventoryAuditLog" Type="Self.InventoryAuditLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Warehouses">
+        <PropertyRef Name="WarehouseID" />
+      </Principal>
+      <Dependent Role="InventoryAuditLog">
+        <PropertyRef Name="WarehouseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PurchaseO__PO_ID__5812160E">
+    <End Role="PurchaseOrders" Type="Self.PurchaseOrders" Multiplicity="1" />
+    <End Role="PurchaseOrderItems" Type="Self.PurchaseOrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PurchaseOrders">
+        <PropertyRef Name="PO_ID" />
+      </Principal>
+      <Dependent Role="PurchaseOrderItems">
+        <PropertyRef Name="PO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PurchaseO__Produ__59063A47">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="PurchaseOrderItems" Type="Self.PurchaseOrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="PurchaseOrderItems">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PurchaseO__Suppl__534D60F1">
+    <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1" />
+    <End Role="PurchaseOrders" Type="Self.PurchaseOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="SupplierID" />
+      </Principal>
+      <Dependent Role="PurchaseOrders">
+        <PropertyRef Name="SupplierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SalesOrde__Custo__48CFD27E">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+    <End Role="SalesOrders" Type="Self.SalesOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="SalesOrders">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SalesOrde__Produ__4D94879B">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="SalesOrderItems" Type="Self.SalesOrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="SalesOrderItems">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SalesOrderItems__4E88ABD4">
+    <End Role="SalesOrders" Type="Self.SalesOrders" Multiplicity="1" />
+    <End Role="SalesOrderItems" Type="Self.SalesOrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SalesOrders">
+        <PropertyRef Name="OrderID" />
+        <PropertyRef Name="OrderDate" />
+      </Principal>
+      <Dependent Role="SalesOrderItems">
+        <PropertyRef Name="OrderID" />
+        <PropertyRef Name="OrderDate" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_GetStockLevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="fn_GetTotalOrderValue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+    <Parameter Name="OrderID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_AddNewProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SKU" Type="nvarchar" Mode="In" />
+    <Parameter Name="Name" Type="nvarchar" Mode="In" />
+    <Parameter Name="Price" Type="decimal" Mode="In" />
+    <Parameter Name="Desc" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_PlaceOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CustomerID" Type="int" Mode="In" />
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="Quantity" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spTopCustomers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spWarehouseLoad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="InventoryProjectDBModelStoreContainer">
+    <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InventoryAuditLog" EntityType="Self.InventoryAuditLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PurchaseOrderItems" EntityType="Self.PurchaseOrderItems" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PurchaseOrders" EntityType="Self.PurchaseOrders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SalesOrderItems" EntityType="Self.SalesOrderItems" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SalesOrders" EntityType="Self.SalesOrders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Warehouses" EntityType="Self.Warehouses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vw_OrderDetails" EntityType="Self.vw_OrderDetails" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vw_OrderDetails].[OrderID] AS [OrderID], 
+    [vw_OrderDetails].[OrderDate] AS [OrderDate], 
+    [vw_OrderDetails].[Status] AS [Status], 
+    [vw_OrderDetails].[CustomerName] AS [CustomerName], 
+    [vw_OrderDetails].[Email] AS [Email], 
+    [vw_OrderDetails].[ProductName] AS [ProductName], 
+    [vw_OrderDetails].[SKU] AS [SKU], 
+    [vw_OrderDetails].[Quantity] AS [Quantity], 
+    [vw_OrderDetails].[UnitPrice] AS [UnitPrice], 
+    [vw_OrderDetails].[LineTotal] AS [LineTotal]
+    FROM [dbo].[vw_OrderDetails] AS [vw_OrderDetails]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vw_ProductSalesSummary" EntityType="Self.vw_ProductSalesSummary" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vw_ProductSalesSummary].[ProductID] AS [ProductID], 
+    [vw_ProductSalesSummary].[ProductName] AS [ProductName], 
+    [vw_ProductSalesSummary].[SKU] AS [SKU], 
+    [vw_ProductSalesSummary].[TotalQuantitySold] AS [TotalQuantitySold], 
+    [vw_ProductSalesSummary].[TotalRevenue] AS [TotalRevenue]
+    FROM [dbo].[vw_ProductSalesSummary] AS [vw_ProductSalesSummary]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__Inventory__Produ__440B1D61" Association="Self.FK__Inventory__Produ__440B1D61">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inventory__Produ__5DCAEF64" Association="Self.FK__Inventory__Produ__5DCAEF64">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="InventoryAuditLog" EntitySet="InventoryAuditLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inventory__Wareh__44FF419A" Association="Self.FK__Inventory__Wareh__44FF419A">
+      <End Role="Warehouses" EntitySet="Warehouses" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inventory__Wareh__5EBF139D" Association="Self.FK__Inventory__Wareh__5EBF139D">
+      <End Role="Warehouses" EntitySet="Warehouses" />
+      <End Role="InventoryAuditLog" EntitySet="InventoryAuditLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PurchaseO__PO_ID__5812160E" Association="Self.FK__PurchaseO__PO_ID__5812160E">
+      <End Role="PurchaseOrders" EntitySet="PurchaseOrders" />
+      <End Role="PurchaseOrderItems" EntitySet="PurchaseOrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PurchaseO__Produ__59063A47" Association="Self.FK__PurchaseO__Produ__59063A47">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="PurchaseOrderItems" EntitySet="PurchaseOrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PurchaseO__Suppl__534D60F1" Association="Self.FK__PurchaseO__Suppl__534D60F1">
+      <End Role="Suppliers" EntitySet="Suppliers" />
+      <End Role="PurchaseOrders" EntitySet="PurchaseOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SalesOrde__Custo__48CFD27E" Association="Self.FK__SalesOrde__Custo__48CFD27E">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="SalesOrders" EntitySet="SalesOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SalesOrde__Produ__4D94879B" Association="Self.FK__SalesOrde__Produ__4D94879B">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="SalesOrderItems" EntitySet="SalesOrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SalesOrderItems__4E88ABD4" Association="Self.FK__SalesOrderItems__4E88ABD4">
+      <End Role="SalesOrders" EntitySet="SalesOrders" />
+      <End Role="SalesOrderItems" EntitySet="SalesOrderItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

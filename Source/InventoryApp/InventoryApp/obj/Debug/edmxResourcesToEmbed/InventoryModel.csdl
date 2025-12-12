@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InventoryProjectDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SalesOrders" Relationship="Self.FK__SalesOrde__Custo__48CFD27E" FromRole="Customers" ToRole="SalesOrders" />
+  </EntityType>
+  <EntityType Name="Inventory">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="WarehouseID" Type="Int32" Nullable="false" />
+    <Property Name="QuantityOnHand" Type="Int32" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__Inventory__Produ__440B1D61" FromRole="Inventory" ToRole="Products" />
+    <NavigationProperty Name="Warehouse" Relationship="Self.FK__Inventory__Wareh__44FF419A" FromRole="Inventory" ToRole="Warehouses" />
+  </EntityType>
+  <EntityType Name="InventoryAuditLog">
+    <Key>
+      <PropertyRef Name="LogID" />
+      <PropertyRef Name="ChangeDate" />
+    </Key>
+    <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="WarehouseID" Type="Int32" Nullable="false" />
+    <Property Name="OldQuantity" Type="Int32" Nullable="false" />
+    <Property Name="NewQuantity" Type="Int32" Nullable="false" />
+    <Property Name="ChangeDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ChangedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__Inventory__Produ__5DCAEF64" FromRole="InventoryAuditLog" ToRole="Products" />
+    <NavigationProperty Name="Warehouse" Relationship="Self.FK__Inventory__Wareh__5EBF139D" FromRole="InventoryAuditLog" ToRole="Warehouses" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SKU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="BasePrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <NavigationProperty Name="Inventories" Relationship="Self.FK__Inventory__Produ__440B1D61" FromRole="Products" ToRole="Inventory" />
+    <NavigationProperty Name="InventoryAuditLogs" Relationship="Self.FK__Inventory__Produ__5DCAEF64" FromRole="Products" ToRole="InventoryAuditLog" />
+    <NavigationProperty Name="PurchaseOrderItems" Relationship="Self.FK__PurchaseO__Produ__59063A47" FromRole="Products" ToRole="PurchaseOrderItems" />
+    <NavigationProperty Name="SalesOrderItems" Relationship="Self.FK__SalesOrde__Produ__4D94879B" FromRole="Products" ToRole="SalesOrderItems" />
+  </EntityType>
+  <EntityType Name="PurchaseOrderItem">
+    <Key>
+      <PropertyRef Name="PO_ItemID" />
+    </Key>
+    <Property Name="PO_ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PO_ID" Type="Int32" Nullable="false" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="UnitCost" Type="Decimal" Precision="10" Scale="2" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__PurchaseO__Produ__59063A47" FromRole="PurchaseOrderItems" ToRole="Products" />
+    <NavigationProperty Name="PurchaseOrder" Relationship="Self.FK__PurchaseO__PO_ID__5812160E" FromRole="PurchaseOrderItems" ToRole="PurchaseOrders" />
+  </EntityType>
+  <EntityType Name="PurchaseOrder">
+    <Key>
+      <PropertyRef Name="PO_ID" />
+    </Key>
+    <Property Name="PO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupplierID" Type="Int32" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="PurchaseOrderItems" Relationship="Self.FK__PurchaseO__PO_ID__5812160E" FromRole="PurchaseOrders" ToRole="PurchaseOrderItems" />
+    <NavigationProperty Name="Supplier" Relationship="Self.FK__PurchaseO__Suppl__534D60F1" FromRole="PurchaseOrders" ToRole="Suppliers" />
+  </EntityType>
+  <EntityType Name="SalesOrderItem">
+    <Key>
+      <PropertyRef Name="OrderItemID" />
+    </Key>
+    <Property Name="OrderItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="UnitPrice" Type="Decimal" Precision="10" Scale="2" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__SalesOrde__Produ__4D94879B" FromRole="SalesOrderItems" ToRole="Products" />
+    <NavigationProperty Name="SalesOrder" Relationship="Self.FK__SalesOrderItems__4E88ABD4" FromRole="SalesOrderItems" ToRole="SalesOrders" />
+  </EntityType>
+  <EntityType Name="SalesOrder">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="OrderDate" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerID" Type="Int32" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK__SalesOrde__Custo__48CFD27E" FromRole="SalesOrders" ToRole="Customers" />
+    <NavigationProperty Name="SalesOrderItems" Relationship="Self.FK__SalesOrderItems__4E88ABD4" FromRole="SalesOrders" ToRole="SalesOrderItems" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="SupplierID" />
+    </Key>
+    <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupplierName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContactInfo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="PurchaseOrders" Relationship="Self.FK__PurchaseO__Suppl__534D60F1" FromRole="Suppliers" ToRole="PurchaseOrders" />
+  </EntityType>
+  <EntityType Name="Warehouse">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="WarehouseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WarehouseName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Inventories" Relationship="Self.FK__Inventory__Wareh__44FF419A" FromRole="Warehouses" ToRole="Inventory" />
+    <NavigationProperty Name="InventoryAuditLogs" Relationship="Self.FK__Inventory__Wareh__5EBF139D" FromRole="Warehouses" ToRole="InventoryAuditLog" />
+  </EntityType>
+  <EntityType Name="vw_OrderDetails">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="OrderDate" />
+      <PropertyRef Name="Status" />
+      <PropertyRef Name="CustomerName" />
+      <PropertyRef Name="Email" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="SKU" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SKU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="UnitPrice" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="LineTotal" Type="Decimal" Precision="21" Scale="2" />
+  </EntityType>
+  <EntityType Name="vw_ProductSalesSummary">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="SKU" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SKU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TotalQuantitySold" Type="Int32" />
+    <Property Name="TotalRevenue" Type="Decimal" Precision="38" Scale="2" />
+  </EntityType>
+  <Association Name="FK__SalesOrde__Custo__48CFD27E">
+    <End Role="Customers" Type="Self.Customer" Multiplicity="1" />
+    <End Role="SalesOrders" Type="Self.SalesOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="SalesOrders">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inventory__Produ__440B1D61">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inventory__Wareh__44FF419A">
+    <End Role="Warehouses" Type="Self.Warehouse" Multiplicity="1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Warehouses">
+        <PropertyRef Name="WarehouseID" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="WarehouseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inventory__Produ__5DCAEF64">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="InventoryAuditLog" Type="Self.InventoryAuditLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="InventoryAuditLog">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inventory__Wareh__5EBF139D">
+    <End Role="Warehouses" Type="Self.Warehouse" Multiplicity="1" />
+    <End Role="InventoryAuditLog" Type="Self.InventoryAuditLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Warehouses">
+        <PropertyRef Name="WarehouseID" />
+      </Principal>
+      <Dependent Role="InventoryAuditLog">
+        <PropertyRef Name="WarehouseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PurchaseO__Produ__59063A47">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="PurchaseOrderItems" Type="Self.PurchaseOrderItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="PurchaseOrderItems">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SalesOrde__Produ__4D94879B">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="SalesOrderItems" Type="Self.SalesOrderItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="SalesOrderItems">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PurchaseO__PO_ID__5812160E">
+    <End Role="PurchaseOrders" Type="Self.PurchaseOrder" Multiplicity="1" />
+    <End Role="PurchaseOrderItems" Type="Self.PurchaseOrderItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PurchaseOrders">
+        <PropertyRef Name="PO_ID" />
+      </Principal>
+      <Dependent Role="PurchaseOrderItems">
+        <PropertyRef Name="PO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PurchaseO__Suppl__534D60F1">
+    <End Role="Suppliers" Type="Self.Supplier" Multiplicity="1" />
+    <End Role="PurchaseOrders" Type="Self.PurchaseOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="SupplierID" />
+      </Principal>
+      <Dependent Role="PurchaseOrders">
+        <PropertyRef Name="SupplierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SalesOrderItems__4E88ABD4">
+    <End Role="SalesOrders" Type="Self.SalesOrder" Multiplicity="1" />
+    <End Role="SalesOrderItems" Type="Self.SalesOrderItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SalesOrders">
+        <PropertyRef Name="OrderID" />
+        <PropertyRef Name="OrderDate" />
+      </Principal>
+      <Dependent Role="SalesOrderItems">
+        <PropertyRef Name="OrderID" />
+        <PropertyRef Name="OrderDate" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InventoryProjectDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Inventories" EntityType="Self.Inventory" />
+    <EntitySet Name="InventoryAuditLogs" EntityType="Self.InventoryAuditLog" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="PurchaseOrderItems" EntityType="Self.PurchaseOrderItem" />
+    <EntitySet Name="PurchaseOrders" EntityType="Self.PurchaseOrder" />
+    <EntitySet Name="SalesOrderItems" EntityType="Self.SalesOrderItem" />
+    <EntitySet Name="SalesOrders" EntityType="Self.SalesOrder" />
+    <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+    <EntitySet Name="Warehouses" EntityType="Self.Warehouse" />
+    <EntitySet Name="vw_OrderDetails" EntityType="Self.vw_OrderDetails" />
+    <EntitySet Name="vw_ProductSalesSummary" EntityType="Self.vw_ProductSalesSummary" />
+    <AssociationSet Name="FK__SalesOrde__Custo__48CFD27E" Association="Self.FK__SalesOrde__Custo__48CFD27E">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="SalesOrders" EntitySet="SalesOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inventory__Produ__440B1D61" Association="Self.FK__Inventory__Produ__440B1D61">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Inventory" EntitySet="Inventories" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inventory__Wareh__44FF419A" Association="Self.FK__Inventory__Wareh__44FF419A">
+      <End Role="Warehouses" EntitySet="Warehouses" />
+      <End Role="Inventory" EntitySet="Inventories" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inventory__Produ__5DCAEF64" Association="Self.FK__Inventory__Produ__5DCAEF64">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="InventoryAuditLog" EntitySet="InventoryAuditLogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inventory__Wareh__5EBF139D" Association="Self.FK__Inventory__Wareh__5EBF139D">
+      <End Role="Warehouses" EntitySet="Warehouses" />
+      <End Role="InventoryAuditLog" EntitySet="InventoryAuditLogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PurchaseO__Produ__59063A47" Association="Self.FK__PurchaseO__Produ__59063A47">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="PurchaseOrderItems" EntitySet="PurchaseOrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SalesOrde__Produ__4D94879B" Association="Self.FK__SalesOrde__Produ__4D94879B">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="SalesOrderItems" EntitySet="SalesOrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PurchaseO__PO_ID__5812160E" Association="Self.FK__PurchaseO__PO_ID__5812160E">
+      <End Role="PurchaseOrders" EntitySet="PurchaseOrders" />
+      <End Role="PurchaseOrderItems" EntitySet="PurchaseOrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PurchaseO__Suppl__534D60F1" Association="Self.FK__PurchaseO__Suppl__534D60F1">
+      <End Role="Suppliers" EntitySet="Suppliers" />
+      <End Role="PurchaseOrders" EntitySet="PurchaseOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SalesOrderItems__4E88ABD4" Association="Self.FK__SalesOrderItems__4E88ABD4">
+      <End Role="SalesOrders" EntitySet="SalesOrders" />
+      <End Role="SalesOrderItems" EntitySet="SalesOrderItems" />
+    </AssociationSet>
+    <FunctionImport Name="sp_AddNewProduct">
+      <Parameter Name="SKU" Mode="In" Type="String" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="Price" Mode="In" Type="Decimal" />
+      <Parameter Name="Desc" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_PlaceOrder">
+      <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+      <Parameter Name="ProductID" Mode="In" Type="Int32" />
+      <Parameter Name="WarehouseID" Mode="In" Type="Int32" />
+      <Parameter Name="Quantity" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spTopCustomers" ReturnType="Collection(InventoryProjectDBModel.spTopCustomers_Result)" />
+    <FunctionImport Name="spWarehouseLoad" ReturnType="Collection(InventoryProjectDBModel.spWarehouseLoad_Result)" />
+  </EntityContainer>
+  <ComplexType Name="spTopCustomers_Result">
+    <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="100" />
+    <Property Type="Decimal" Name="total_spent" Nullable="true" Precision="38" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="spWarehouseLoad_Result">
+    <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="TotalQty" Nullable="true" />
+  </ComplexType>
+</Schema>

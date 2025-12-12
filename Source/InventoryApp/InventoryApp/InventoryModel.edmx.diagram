@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="887a78464f5a4633b158f960f04e97a9" Name="Diagram1">
+        <EntityTypeShape EntityType="InventoryProjectDBModel.Customer" Width="1.5" PointX="1.5" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.Inventory" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.InventoryAuditLog" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.Product" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.PurchaseOrderItem" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.PurchaseOrder" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.SalesOrderItem" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.SalesOrder" Width="1.5" PointX="0.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.Supplier" Width="1.5" PointX="1.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.Warehouse" Width="1.5" PointX="0.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.vw_OrderDetails" Width="1.5" PointX="5.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryProjectDBModel.vw_ProductSalesSummary" Width="1.5" PointX="7.75" PointY="2" IsExpanded="true" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__SalesOrde__Custo__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__Inventory__Produ__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__Inventory__Wareh__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__Inventory__Produ__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__Inventory__Wareh__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__PurchaseO__Produ__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__SalesOrde__Produ__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__PurchaseO__PO_ID__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__PurchaseO__Suppl__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryProjectDBModel.FK__SalesOrderItems__4E88ABD4" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
